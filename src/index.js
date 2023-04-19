@@ -1,28 +1,38 @@
 import { createSchema, createYoga } from 'graphql-yoga'
 import { createServer } from 'node:http'
 
+// Scalar types - ID, String, Boolean, Int, Float
+
 const typeDefs = `
     type Query {
-        hello: String!
-        name: String!
-        location: String!
-        bio: String!
+        id: ID!
+        title: String!
+        price: Float!
+        releaseYear: Int
+        rating: Float
+        inStock: Boolean
     }
 `
 
 const resolvers = {
     Query: {
-        hello() {
-            return 'My first Graphql query'
+        id() {
+            return 'abc123'
         },
-        name() {
-            return 'Mogambo'
+        title() {
+            return 'Trisula'
         },
-        location() {
-            return 'Hell'
+        price() {
+            return 7.99
         },
-        bio() {
-            return 'I am a villan with a evil laugh. Buhuhahahaha!'
+        releaseYear() {
+            return 2022
+        },
+        rating() {
+            return null
+        },
+        inStock() {
+            return false
         }
     }
 }
