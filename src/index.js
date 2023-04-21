@@ -5,34 +5,42 @@ import { createServer } from 'node:http'
 
 const typeDefs = `
     type Query {
+        me: User!
+        post: Post!
+    }
+
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        age: Int
+    }
+
+    type Post {
         id: ID!
         title: String!
-        price: Float!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean
+        body: String!
+        published: Boolean!
     }
 `
 
 const resolvers = {
     Query: {
-        id() {
-            return 'abc123'
+        me() {
+            return {
+                id: 'abc123',
+                name: 'Sunil',
+                email: 'sunil10790play@gmail.com'
+            }
         },
-        title() {
-            return 'Trisula'
-        },
-        price() {
-            return 7.99
-        },
-        releaseYear() {
-            return 1990
-        },
-        rating() {
-            return null
-        },
-        inStock() {
-            return false
+
+        post() {
+            return {
+                id: 'abc1',
+                title: 'Self Mastery',
+                body: 'Mogambo has mastered the universe',
+                published: true
+            }
         }
     }
 }
