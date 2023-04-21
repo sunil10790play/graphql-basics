@@ -7,6 +7,8 @@ const typeDefs = `
     type Query {
         me: User!
         post: Post!
+        add(a: Float!, b:Float!): Float!
+        greeting(name: String, position: String): String!
     }
 
     type User {
@@ -16,7 +18,7 @@ const typeDefs = `
         age: Int
     }
 
-    type Post {
+    type Post { 
         id: ID!
         title: String!
         body: String!
@@ -33,13 +35,22 @@ const resolvers = {
                 email: 'sunil10790play@gmail.com'
             }
         },
-
         post() {
             return {
                 id: 'abc1',
                 title: 'Self Mastery',
                 body: 'Mogambo has mastered the universe',
                 published: true
+            }
+        },
+        add(parent, args, ctx, info) {
+            return args.a + args.b
+        },
+        greeting(parent, args, cxt, info) {
+            if(args.name && args.position) {
+                return `${args.name} is a amazing ${args.position}`
+            } else {
+                return `Hello!`
             }
         }
     }
