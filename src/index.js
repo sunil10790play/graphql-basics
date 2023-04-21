@@ -26,7 +26,7 @@ const resolvers = {
             return 7.99
         },
         releaseYear() {
-            return 2022
+            return 1990
         },
         rating() {
             return null
