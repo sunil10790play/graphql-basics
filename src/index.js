@@ -7,7 +7,8 @@ const typeDefs = `
     type Query {
         me: User!
         post: Post!
-        add(a: Float!, b:Float!): Float!
+        grades: [Int!]!
+        add(numbers: [Float!]!): Float!
         greeting(name: String, position: String): String!
     }
 
@@ -43,8 +44,17 @@ const resolvers = {
                 published: true
             }
         },
+        grades(parent, args, ctx, info) {
+            return [99, 50, 76]
+        },
         add(parent, args, ctx, info) {
-            return args.a + args.b
+            if(args.numbers.length) {
+                return args.numbers.reduce((accumulator, currentValue) => {
+                    return accumulator + currentValue
+                })
+            } else {
+                return 0;
+            }
         },
         greeting(parent, args, cxt, info) {
             if(args.name && args.position) {
