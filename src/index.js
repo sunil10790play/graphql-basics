@@ -3,13 +3,44 @@ import { createServer } from 'node:http'
 
 // Scalar types - ID, String, Boolean, Int, Float
 
+const users = [{
+    id: '1',
+    name: 'Sunil',
+    email: 'sunil@example.com',
+    age: 33
+}, {
+    id: '2',
+    name: 'Asha',
+    email: 'asha@example.com'
+}, {
+    id: '3',
+    name: 'Ramu',
+    email: 'ramu@example.com'
+}]
+
+const posts = [{
+    id: '1',
+    title: 'Who am I?',
+    body: 'I am Mogambo and I am Awesome!',
+    published: true
+}, {
+    id: '2',
+    title: 'How to be healthy?',
+    body: 'Workout, Meditate, Learn',
+    published: true
+}, {
+    id: '3',
+    title: 'How to be evil?',
+    body: 'Be like Mogambo',
+    published: true
+}]
+
 const typeDefs = `
     type Query {
         me: User!
         post: Post!
-        grades: [Int!]!
-        add(numbers: [Float!]!): Float!
-        greeting(name: String, position: String): String!
+        users(query: String): [User!]!
+        posts(query: String): [Post!]!
     }
 
     type User {
@@ -44,24 +75,21 @@ const resolvers = {
                 published: true
             }
         },
-        grades(parent, args, ctx, info) {
-            return [99, 50, 76]
-        },
-        add(parent, args, ctx, info) {
-            if(args.numbers.length) {
-                return args.numbers.reduce((accumulator, currentValue) => {
-                    return accumulator + currentValue
-                })
-            } else {
-                return 0;
+        users(parent, args, ctx, info) {
+            if(!args.query) {
+                return users
             }
+            return users.filter((user) => {
+                return user.name.toLowerCase().includes(args.query.toLowerCase())
+            })
         },
-        greeting(parent, args, cxt, info) {
-            if(args.name && args.position) {
-                return `${args.name} is a amazing ${args.position}`
-            } else {
-                return `Hello!`
+        posts(parent, args, ctx, info) {
+            if(!args.query) {
+                return posts
             }
+            return posts.filter((post) => {
+                return (post.title.toLowerCase().includes(args.query.toLowerCase()) || post.body.toLowerCase().includes(args.query.toLowerCase()))
+            })
         }
     }
 }
