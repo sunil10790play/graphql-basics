@@ -14,25 +14,28 @@ const users = [{
     email: 'asha@example.com'
 }, {
     id: '3',
-    name: 'Ramu',
-    email: 'ramu@example.com'
+    name: 'Pranav',
+    email: 'pranav@example.com'
 }]
 
 const posts = [{
     id: '1',
     title: 'Who am I?',
-    body: 'I am Mogambo and I am Awesome!',
-    published: true
+    body: 'I am Pranav and I am Awesome!',
+    published: true,
+    author: '3'
 }, {
     id: '2',
     title: 'How to be healthy?',
     body: 'Workout, Meditate, Learn',
-    published: true
+    published: true,
+    author: '2'
 }, {
     id: '3',
-    title: 'How to be evil?',
-    body: 'Be like Mogambo',
-    published: true
+    title: 'Popoye and Best Friends',
+    body: 'Once upon a time, there were two best friends. And they love to be together',
+    published: true,
+    author: '3'
 }]
 
 const typeDefs = `
@@ -48,6 +51,7 @@ const typeDefs = `
         name: String!
         email: String!
         age: Int
+        posts: [Post!]!
     }
 
     type Post { 
@@ -55,6 +59,7 @@ const typeDefs = `
         title: String!
         body: String!
         published: Boolean!
+        author: User!
     }
 `
 
@@ -89,6 +94,20 @@ const resolvers = {
             }
             return posts.filter((post) => {
                 return (post.title.toLowerCase().includes(args.query.toLowerCase()) || post.body.toLowerCase().includes(args.query.toLowerCase()))
+            })
+        }
+    },
+    Post: {
+        author(parent, args, ctx, info) {
+            return users.find((user) => {
+                return user.id === parent.author
+            })
+        }
+    },
+    User: {
+        posts(parent, args, ctx, info) {
+            return posts.filter((post) => {
+                return post.author === parent.id
             })
         }
     }
